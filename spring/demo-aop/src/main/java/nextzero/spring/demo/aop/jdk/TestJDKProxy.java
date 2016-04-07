@@ -7,7 +7,7 @@ import java.lang.reflect.Proxy;
 
 
 /**
- * 测试JDK动态代理技术
+ * JDK动态代理技术
  * 测试接口IBusiness
  */
 public class TestJDKProxy {

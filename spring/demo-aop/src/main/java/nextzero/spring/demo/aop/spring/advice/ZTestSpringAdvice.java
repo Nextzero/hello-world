@@ -1,8 +1,5 @@
 package nextzero.spring.demo.aop.spring.advice;
 
-import nextzero.spring.demo.aop.spring.advice.GreetingBeforeAdvice;
-import nextzero.spring.demo.aop.spring.advice.NaiveWaiter;
-import nextzero.spring.demo.aop.spring.advice.Waiter;
 import org.springframework.aop.AfterAdvice;
 import org.springframework.aop.BeforeAdvice;
 import org.springframework.aop.framework.ProxyFactory;
@@ -13,6 +10,8 @@ import org.springframework.aop.framework.ProxyFactory;
  * 环绕增强
  * 异常抛出增强
  * 引介增强
+ *
+ * 增强对目标对象的所有方法都生效！！
  *
  * Spring Proxy实际上使用的就是JDK动态代理或者Cglib动态代理技术
  *
@@ -40,6 +39,8 @@ public class ZTestSpringAdvice {
         //动态产生代理对象
         Waiter proxy = (Waiter)pf.getProxy();
         try {
+            //增强对所有的方法都生效，若要只针对某一个方法，则需要加入 切点 ！
+            //proxy.greetTo("czhc");
             proxy.serveTo("czhc");
         } catch (Exception e) {
             e.printStackTrace();
