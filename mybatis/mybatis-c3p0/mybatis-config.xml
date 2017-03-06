@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="nextzero.mybatis.test.C3P0DataSourceFactory">
+                <!--
+                mybaits与c3p0的结合，需要自己新建一个UnpooledDataSourceFactory的类，并在上面的type中指定包全名
+                mybatis实现了成员变量注入，因此下面需要根据c3p0本身的配置项进行配置即可。
+                -->
+                <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/mysql?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull"/>
+                <property name="user" value="root"/>
+                <property name="password" value="mysql"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <package name="nextzero.mybatis.test" />
+    </mappers>
+</configuration>
