@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="nextzero.mybatis.demo.dao.SystemInfoMapper">
+
+    <!-- =================结果映射================== -->
+    <resultMap id="depInfoDetails" type="nextzero.mybatis.demo.pojos.DepInfo">
+        <id property="depId" column="depId"/>
+        <result property="depName" column="depName"/>
+        <result property="parentDepId" column="parentDepId"/>
+        <collection property="userList" ofType="nextzero.mybatis.demo.pojos.UserInfo">
+            <id property="userId" column="userId"/>
+            <result property="userName" column="userName"/>
+            <result property="age" column="userAge"/>
+            <result property="des" column="userDes" />
+            <result property="depId" column="depId"/>
+        </collection>
+    </resultMap>
+
+    <!-- =================部门简单的增删查改================== -->
+    <insert id="addDep" parameterType="nextzero.mybatis.demo.pojos.DepInfo">
+        INSERT INTO test_mybatis.dep(id, name, parent_dep_id) VALUES(#{depId},#{depName},#{parentDepId})
+    </insert>
+
+    <delete id="deleteDep" parameterType="int">
+        DELETE FROM test_mybatis.dep WHERE id=#{id}
+    </delete>
+
+    <select id="getDepById" parameterType="int" resultMap="depInfoDetails">
+        SELECT
+            d.id as depId,
+            d.name as depName,
+            d.parent_dep_id as parentDepId,
+            u.id as userId,
+            u.name as userName,
+            u.age as userAge,
+            u.des as userDes
+        FROM
+            test_mybatis.dep as d
+            left join test_mybatis.user as u
+        ON u.dep_id = d.id
+        WHERE
+            d.id=#{depId}
+    </select>
+
+    <update id="updateDepInfo" parameterType="nextzero.mybatis.demo.pojos.DepInfo">
+        UPDATE test_mybatis.dep
+        <set>
+            <if test="depName!=null">
+                name=#{depName},
+            </if>
+            <if test="parentDepId!=null">
+                parent_dep_id=#{parentDepId}
+            </if>
+        </set>
+        WHERE
+            id=#{depId}
+    </update>
+
+    <!-- =================用户简单的增删查改================== -->
+    <insert id="addUser" parameterType="nextzero.mybatis.demo.pojos.UserInfo">
+        INSERT INTO test_mybatis.user(id,name,age,des,dep_id) VALUES(#{userId},#{userName},#{age},#{des},#{depId})
+    </insert>
+
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM test_mybatis.user WHERE id=#{userId}
+    </delete>
+
+    <select id="getUserById" parameterType="int" resultType="nextzero.mybatis.demo.pojos.UserInfo">
+        SELECT
+            id as userId,
+            name as userName,
+            age,
+            des,
+            dep_id as depId
+        FROM
+            test_mybatis.user
+        WHERE
+            id = #{userId}
+    </select>
+
+    <update id="updateUserInfo" parameterType="nextzero.mybatis.demo.pojos.UserInfo">
+        UPDATE test_mybatis.user
+        <set>
+            <if test="userName!=null">
+                name=#{userName},
+            </if>
+            <if test="age!=null">
+                age=#{age},
+            </if>
+            <if test="des!=null">
+                des=#{des},
+            </if>
+            <if test="depId!=null">
+                dep_id=#{depId}
+            </if>
+        </set>
+        WHERE
+            id=#{userId}
+    </update>
+
+
+    <!-- =================其他操作================== -->
+    <select id="getUserByDepId" parameterType="int" resultType="nextzero.mybatis.demo.pojos.UserInfo">
+        SELECT
+            id as userId,
+            name as userName,
+            age,
+            des,
+            dep_id as depId
+        FROM
+            test_mybatis.user
+        WHERE
+            dep_id = #{depId}
+    </select>
+
+    <select id="getUserByNameAndAge" parameterType="Map" resultType="nextzero.mybatis.demo.pojos.UserInfo">
+        select
+            id as userId,
+            name as userName,
+            age,
+            des,
+            dep_id as depId
+        from
+            test_mybatis.user
+        <where>
+            <if test="name != null">
+                name = #{name}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+        </where>
+    </select>
+</mapper>
