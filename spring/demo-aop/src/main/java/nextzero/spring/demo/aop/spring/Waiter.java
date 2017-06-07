@@ -1,4 +1,4 @@
-package nextzero.spring.demo.aop.spring.advice;
+package nextzero.spring.demo.aop.spring;
 
 
 /**

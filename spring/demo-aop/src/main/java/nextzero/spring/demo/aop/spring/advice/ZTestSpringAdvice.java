@@ -1,5 +1,7 @@
 package nextzero.spring.demo.aop.spring.advice;
 
+import nextzero.spring.demo.aop.spring.NaiveWaiter;
+import nextzero.spring.demo.aop.spring.Waiter;
 import org.springframework.aop.AfterAdvice;
 import org.springframework.aop.BeforeAdvice;
 import org.springframework.aop.framework.ProxyFactory;

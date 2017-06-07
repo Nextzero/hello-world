@@ -1,4 +1,4 @@
-package nextzero.spring.demo.aop.spring.advice;
+package nextzero.spring.demo.aop.spring;
 
 
 /**
@@ -8,12 +8,10 @@ package nextzero.spring.demo.aop.spring.advice;
  */
 public class NaiveWaiter implements Waiter{
 
-    @Override
     public void greetTo(String name) {
         System.out.println("greet to " + name + "...");
     }
 
-    @Override
     public void serveTo(String name) throws Exception{
         System.out.println("serving " + name + "...");
     }
