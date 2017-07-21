@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bootstrap Demo</title>
+    <script src="jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!--
+            水平排列的表单
+
+            .form-horizontal
+            .form-group
+            .control-label
+            .form-control
+            .col-md-*
+            .checkbox
+        -->
+        <form action="" class="form-horizontal">
+            <div class="form-group">
+                <label for="" class="col-md-2 control-label">Email</label>
+                <div class="col-md-10">
+                    <input type="email" class="form-control" placeholder="email">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="" class="col-md-2 control-label">Password</label>
+                <div class="col-md-10">
+                    <input type="password" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="" class="col-md-2 control-label">Remark</label>
+                <div class="col-md-10">
+                    <textarea name="" id="" rows="3" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="checkbox">
+                        <label for="">
+                            <input type="checkbox">Remember me
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <hr />
+
+
+        <!--
+            单选多选
+            注意label>input，如果label带有for属性，则点文字部分不能生效
+
+        -->
+        <form action="">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="">
+                    linux is very much!
+                </label>
+            </div>
+            <div class="checkbox disabled">
+                <label>
+                    <input type="checkbox" disabled value="">
+                    hehe
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="test" value="option2">
+                    option2
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="test" value="option1">
+                    option1
+                </label>
+            </div>
+            <div class="radio disabled">
+                <label>
+                    <input type="radio" name="test" disabled value="option3">
+                    option3
+                </label>
+            </div>
+        </form>
+        
+    </div>
+</body>
+</html>
