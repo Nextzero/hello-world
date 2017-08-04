@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>控制器与$scope - 入门</h3>
+        </div>
+
+        <!-- 
+            控制器与$scope
+            
+            当在html元素中添加ng-controller，并为之指定一个名称时，angular创建了一个新的作用域对象$scope
+            即`双向绑定`中提到的当前作用域！该html元素所包含的区域内都可以通过数据绑定来访问$scope对象的成员变量
+            同时，ng-click所触发的点击事件也将在$scope对象内，查找事件处理函数。
+
+            当在html元素中添加ng-controller，则必须定义相应的控制器函数，否则将报错：
+            app.controller('myController', function(){
+
+            });
+            其中：
+            第一个参数：ng-controller的名称
+            第二个参数：函数，用于初始化$scope对象，比如：绑定的数据模型，事件响应函数...
+            该函数依赖的参数可通过`注入`方式传入，如$scope, $http , $localtion...
+
+            > 控制器函数可理解成$scope的构造函数
+        -->
+        <h3>id: {{data.id}}</h3>
+        <h3>name: {{data.name}}</h3>
+
+        <button class="btn btn-primary" ng-click="onClick()">Click</button>
+    </div>
+</body>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope) {
+        //控制器函数 初始化$scope对象， 设置对象data的初始值
+        $scope.data = {
+            id: 1,
+            name: "angular js"
+        }
+
+        // 为$scope对象添加方法
+        $scope.onClick = function(){
+            //测试用
+            $scope.data.id += 1;
+        }
+    });
+</script>
+
+</html>
