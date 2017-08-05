@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>过滤器 - 入门</h3>
+        </div>
+
+        <!-- 
+            过滤器
+            过滤器用来格式化需要展示给用户的数据，
+
+            在HTML中的模型绑定符号{{ }}内通过 | 符号来调用过滤器。
+            以HTML的形式使用过滤器时，如果需要传递参数给过滤器，只要在过滤器名字后面加冒号
+        -->
+        <!-- 转换成大写显示 -->
+        <h3>{{'javascript' | uppercase}}</h3>
+        <!-- 转换成数字，并直保留2位小数 -->
+        <h3>{{'2.1234' | number:2}}</h3>
+        <!-- 日期格式化 -->
+        <h3>{{now | date:'medium'}}</h3>
+        <h3>{{now | date:'yyyy-MM-dd HH:mm:ss'}}</h3>
+        <h3>{{now | date:'MM/dd/yyyy @ h:mma'}}</h3>
+        <h3>{{now | date:"MM/dd/yyyy 'at' h:mma"}}</h3>
+
+        <h3>-----------------------华丽的分割线-------------------------------</h3>
+    </div>
+</body>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $filter) {
+        $scope.now = new Date();
+
+        /*
+            在JavaScript代码中可以通过$filter来调用过滤器。
+            $filter是angular内置服务，可通过注入获取
+            
+        */
+        console.log( $filter('uppercase')('abcd') );
+    });
+</script>
+
+</html>
