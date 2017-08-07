@@ -34,9 +34,10 @@
             scope: {
                 // 给指令指定独立的作用域，但并不与外层的作用域进行映射，仅自定义一些数据模型，如name
                 // 这种情况下，不能在这里直接给scope添加成员变量，会报错
+                // name: 12    
+                
                 // 可以通过给指令添加一个link函数，这个函数的第一个参数即为该指令的作用域
-                // 该link函数作用相当于controller函数，可在函数内对scope进行初始化！
-                // name: 12       
+                // 该link函数作用相当于controller函数，可在函数内对scope进行初始化！   
             },
             template: '指令内的值： <input type="text" class="form-control" ng-model="name">',
             link: function(scope){
