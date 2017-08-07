@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>指令 - 作用域（独立作用域）</h3>
+        </div>
+      
+        <my-hello></my-hello>
+    </div>
+</body>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $filter) {
+    });
+
+    // directive api支持注入方式，再加上闭包特性，使得在link函数内可以使用注入的服务。
+    app.directive('myHello', function($interval){
+        return {
+            restrict: 'EA',
+            scope: {
+                // 给指令指定独立的作用域，但并不与外层的作用域进行映射，仅自定义一些数据模型，如name
+                // 这种情况下，不能在这里直接给scope添加成员变量，会报错
+                // 可以通过给指令添加一个link函数，这个函数的第一个参数即为该指令的作用域
+                // 该link函数作用相当于controller函数，可在函数内对scope进行初始化！
+                // name: 12       
+            },
+            template: '指令内的值： <input type="text" class="form-control" ng-model="name">',
+            link: function(scope){
+                scope.name = "hello wrold";
+
+                //定时打印指令作用域的值
+                timeoutId = $interval(function () {
+                    console.log(scope.name);
+                }, 1000);
+            }
+        };
+    });
+
+
+
+</script>
+
+</html>
