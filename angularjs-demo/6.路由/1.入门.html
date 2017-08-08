@@ -106,6 +106,7 @@
             })
             // : 后面可以带上参数，AngularJS就会把它解析出来并传递给$routeParams
             // AngularJS会在$routeParams中添加一个名为name的键，它的值会被设置为加载进来的URL中的值。
+            // 关于传递多个变量：https://docs.angularjs.org/api/ngRoute/service/$routeParams   Example
             .when('/table/:name', {
                 templateUrl: 'page/table.html',
                 controller: 'tableController'
