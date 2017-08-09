@@ -1,0 +1,1 @@
+单个入口，单个module的angular工程
