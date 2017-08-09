@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>过滤器 - 内置过滤器</h3>
+        </div>
+
+        <!--
+            内置过滤器
+            https://docs.angularjs.org/api/ng/filter
+
+            currency
+            date
+            filter
+            json
+            limitTo
+            lowercase
+            uppercase
+            number
+            orderBy
+            
+            以下仅重点介绍filter
+        -->
+
+        <!-- 
+            filter过滤器可以从给定 `数组` 中选择一个 `子集` ，并将其生成一个 `新数组` 返回。
+            使用时，angular将遍历待过滤数组，将数组的每个成员传递到过滤器中进行过滤。
+
+            这个过滤器的第一个参数可以是字符串、对象或是一个用来从数组中选择元素的函数。 
+            - 字符串：返回所有包含这个字符串的元素。如果我们想返回不包含该字符串的元素，在参数前加!符号。
+            - 对象：AngularJS会将待过滤对象的属性同这个对象中的同名属性进行比较，如果属性值是字符串就会判断是否包含该字符串。如果我们希望对全部属性都进行对比，可以将$当作键名。 
+            - 函数：对每个元素都执行这个函数，返回非假值的元素会出现在新的数组中并返回。 
+        -->
+
+        <h3>字符串过滤</h3>
+        <input type="text" class="form-control" ng-model="filterStr">
+        <ul>
+            <li ng-repeat="friend in friends | filter:filterStr">
+                名字：{{friend.name}}，电话：{{friend.phone}}
+            </li>
+        </ul>
+        <h3>------------------------华丽的分割线----------------------------------</h3>
+
+
+        <!--
+            对象过滤可指定需要过滤的属性
+        -->
+        <h3>对象过滤</h3>
+        <hr />
+        <div class="input-group">
+            <label class="control-label">下面输入的参数为对象filterObj_1的name成员变量，
+                作为过滤参数，仅根据数组中的name属性进行过滤</label>
+            <input type="text" class="form-control" ng-model="filterObj_1.name">
+        </div>
+        <ul>
+            <li ng-repeat="friend in friends | filter:filterObj_1">
+                名字：{{friend.name}}，电话：{{friend.phone}}
+            </li>
+        </ul>
+        <!-- 
+            当过滤参数对象为{name:John,phone:1234}，则数组中同时满足这两个值得对象才会被返回。
+
+            注意，当对象成员变量为字符串时，只需要子串匹配则认为匹配!!
+        -->
+        <hr />
+        <h4>过滤条件为：{{filterObj_2}}</h4>        
+        <ul>
+            <li ng-repeat="friend in friends | filter:filterObj_2">
+                名字：{{friend.name}}，电话：{{friend.phone}}
+            </li>
+        </ul>
+        <!-- 当需要在对象中所有成员变量中，过滤包含字符串'angular'时，可使用$ -->
+        <hr />
+        <h4>过滤条件为：{{filterObj_3}}</h4>        
+        <ul>
+            <li ng-repeat="friend in friends | filter:filterObj_3">
+                名字：{{friend.name}}，电话：{{friend.phone}}
+            </li>
+        </ul>
+        <!--
+            注意：
+            使用特定的成员变量名称进行过滤时，仅能过滤第一层变量，而使用$时，则没有这个限制。例如：
+            数组的一个成员对象为：{name: {first: 'John', last: 'Doe'}}        
+            当过滤参数为：{name: 'John'}时，上面的成员对象不会被返回；
+            当过滤参数为：{$: 'John'}时，上面的成员对象将被返回
+        -->
+        <h3>------------------------华丽的分割线----------------------------------</h3>
+        
+
+        <!-- 
+            对每个元素都执行这个函数，返回非假值的元素会出现在新的数组中并返回。
+            这个被执行的函数形参为：待过虑数组元素，数组下标，数组本身
+         -->
+        <h3>函数过滤</h3>
+        <ul>
+            <li ng-repeat="friend in friends | filter:filterFunc">
+                名字：{{friend.name}}，电话：{{friend.phone}}
+            </li>
+        </ul>
+        <h3>------------------------华丽的分割线----------------------------------</h3>
+
+
+        <!--
+            当过滤参数为string或object时，还有第二个参数可以指定，请参考api文档：
+            https://docs.angularjs.org/api/ng/filter/filter
+        -->
+    </div>
+</body>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $filter) {
+        //  测试用对象数组
+         $scope.friends = [
+            { name: 'John', phone: '555-1276' },
+            { name: 'Mary', phone: '800-BIG-MARY' },
+            { name: 'Mike', phone: '555-4321' },
+            { name: 'Adam', phone: '555-5678' },
+            { name: 'Julie', phone: '555-8765' },
+            { name: 'Juliette', phone: '555-5678' },
+            { name: 'bootstrap', phone: 'angular' },
+            { name: 'angular', phone: '555-567' } // 测试用，不要惊讶电话号码是字母!
+        ];
+
+        //对象过滤
+        $scope.filterObj_1 = {
+            
+        };
+
+        $scope.filterObj_2 = {
+            name: 'John',
+            phone: '5'
+        };
+
+        $scope.filterObj_3 = {
+            $: 'angular'
+        }
+
+        // 函数过滤，将下标为单数的成员返回
+        $scope.filterFunc = function(elem, index, firends){
+            if(index % 2 == 0){
+                return elem;
+            }
+        }
+    });
+</script>
+
+</html>

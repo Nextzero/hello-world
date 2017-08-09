@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bootstrap Demo</title>
+    <script src="jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <style>
+        img{
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 默认情况下，缩小时浏览器增加滚动条 -->
+        <img src="img/表格状态类.png" alt="">
+
+        <!-- 
+            响应式图片
+            在 Bootstrap 版本 3 中，通过为图片添加 .img-responsive 类可以让图片支持响应式布局。
+            其实质是为图片设置了 max-width: 100%;、 height: auto; 和 display: block; 属性，
+            从而让图片在其父元素中更好的缩放。            
+        -->
+        <img src="img/表格状态类.png" class="img-responsive" alt="">
+
+
+        <!-- 图片形状 -->
+        <img src="img/test.png" class="img-responsive img-rounded" alt="">
+        <img src="img/test.png" class="img-responsive img-circle" alt="">
+        <img src="img/test.png" class="img-responsive img-thumbnail" alt="">
+    </div>
+</body>
+</html>

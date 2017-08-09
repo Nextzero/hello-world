@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bootstrap Demo</title>
+    <script src="jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 
+            可作为按钮使用的标签或元素
+            为 <a>、<button> 或 <input> 元素添加按钮类（button class）即可使用 Bootstrap 提供的样式。
+        --> 
+        <a href="#" class="btn btn-default">a</a>
+        <button class="btn btn-default">Button</button>   
+        <input type="button" class="btn btn-info" value="input.button">
+        <input type="submit" class="btn btn-success" value="input.Submit">
+
+        <br />
+        <br />
+
+        <!--
+            针对组件的注意事项
+            虽然按钮类可以应用到 <a> 和 <button> 元素上，但是，导航和导航条组件只支持 <button> 元素。
+        -->
+
+
+        <!-- 
+            按钮预定义样式
+        -->
+        <button class="btn btn-default">默认样式</button>
+        <button class="btn btn-primary">首选项</button>
+        <button class="btn btn-success">成功</button>
+        <button class="btn btn-info">一般信息</button>
+        <button class="btn btn-warning">警告</button>
+        <button class="btn btn-danger">危险</button>
+        <button class="btn btn-link">链接</button>
+
+
+        <!--
+            btn-lg
+            btn-sm
+            btn-xs
+            btn-block
+        -->
+
+        <br /><br />
+
+         <!-- 通过使用一个象征关闭的图标，可以让模态框和警告框消失。 -->
+        <div class="row">
+            <button class="close"><span>&times;</span></button>
+        </div>
+        <div class="row">
+            <button class="close">关闭</button>
+        </div>
+        <button class="btn btn-default">更多<span class="caret"></span></button>
+    </div>
+</body>
+</html>

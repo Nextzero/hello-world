@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>服务 - 入门</h3>
+        </div>
+
+        <!-- 
+        服务
+            对于controller，angular会在视图创建或销毁时，重新初始化controller以及$scope,
+            因此angular建议要把controller做的相对精简一些
+
+            service在整个应用中是单实例，而且一旦加载后则一直存在（service支持延迟加载，直到有人声明需要注入，才会初始化）
+
+            创建service的方法很多：
+                factory
+                service
+                provider
+                constant
+                value
+            
+            其中最常用的是factory，这里只讲述factory方法。
+        -->
+        <ul class="nav nav-tabs">
+            <li ng-repeat="item in menu"><a href="#">{{item}}</a></li>
+        </ul>
+    </div>
+</body>
+
+<script>
+    var app = angular.module('myApp',[]);
+
+    //自定义一个服务（通过工厂方法）
+    //第一个参数为服务名称，第二个参数为工厂方法，该方法需要返回一个实际的服务对象
+    app.factory('menuService', function(){
+        var menuData = [
+            '网页',
+            '新闻',
+            '贴吧',
+            '地图',
+            '学术',
+            '设置'
+        ];
+
+        //工厂方法，返回实际的服务对象
+        return {
+            // 服务对象可包含数据
+            menu : menuData,
+
+            //服务对象可包含方法 
+            test: function(){
+                console.log('test');
+            }
+        }
+    });
+
+    // 通过注入，获取自定义服务
+    app.controller('myController', function($scope, menuService){
+        //使用服务获取菜单数据
+        $scope.menu = menuService.menu;
+
+        //测试调用服务方法
+        menuService.test();
+    });
+</script>
+</html>

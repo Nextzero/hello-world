@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bootstrap Demo</title>
+    <script src="jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!--
+            select
+            .form-control
+            .form-control-static
+        -->
+        <form action="" class="form-horizontal">
+            <div class="form-group">
+                <label for="" class="col-md-2 control-label">爱好</label>
+                <div class="col-md-10">
+                    <select name="" id="" class="form-control">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select>    
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="" class="col-md-2 control-label">Email</label>
+                <div class="col-md-10">
+                    <p class="form-control-static">email@example.com</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="" class="col-md-2 control-label">Password</label>
+                <div class="col-md-10">
+                    <input type="password" class="form-control">
+                </div>
+            </div>
+        </form>
+        <hr />
+
+
+        <!-- 
+            校验状态
+            .has-success
+            .has-warning
+            .has-error
+        -->
+        <form action="">
+            <div class="form-group has-success">
+                <label for="" class="control-label">input with success</label>
+                <input type="text" class="form-control">
+                <p class="help-block">a block of help text </p>
+            </div>
+            <div class="from-group has-warning">
+                <label for="" class="control-label">input with warning</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="form-group has-error">
+                <label for="" class="control-label"> error</label>
+                <input type="text" class="form-control">
+            </div>
+        </form>
+        
+    </div>
+</body>
+</html>

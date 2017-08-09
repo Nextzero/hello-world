@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="parentController">
+        <div class="page-header">
+            <h3>控制器与$scope - 入门</h3>
+        </div>
+
+        <!-- 
+            控制器嵌套与$scope继承
+
+            当在多个html元素中添加ng-controller时，angular会根据DOM树结构，将ng-controller也组织成树结构，
+            准确来说：
+            是将ng-controller所创建的$scope对象组织成树结构，而$rootScope则是树根元素。
+
+            当访问{{name}}时，将首先在当前$scope对象中查找，若不存在，则查找当前$scope的父$scope对象....直到$rootScope
+            实际上，$scope通过<原型链模式>继承了父$scope！
+        -->
+        <h3>在parentController范围内访问parent $scope 变量：{{parentName}}</h3>
+        <hr />
+
+        <div class="" ng-controller="myController">
+            <h3>在myController范围内访问parent $scope 变量：{{parentName}}</h3>
+            <h3>在myController范围内访问my $scope 变量：{{myName}}</h3>
+            <hr />
+
+            <div class="" ng-controller="sonController">
+                <h3>在sonController范围内访问parent $scope 变量：{{parentName}}</h3>
+                <h3>在sonController范围内访问my $scope 变量：{{myName}}</h3>
+                <h3>在sonController范围内访问son $scope 变量：{{sonName}}</h3>
+                <hr />
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var app = angular.module('myApp', []);
+    
+    app.controller('parentController', function($scope){
+        $scope.parentName = "parent";
+    });
+
+    app.controller('myController', function ($scope) {
+        $scope.myName = "my";
+    });
+
+    app.controller('sonController', function($scope){
+        $scope.sonName = "domi"
+    });
+</script>
+
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bootstrap Demo</title>
+    <script src="jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!--
+            将下拉菜单触发器和下拉菜单都包裹在 .dropdown 里，
+            或者另一个声明了 position: relative; 的元素。然后加入组成菜单的 HTML 代码。
+        -->
+        <div class="dropdown">
+            <button class="btn btn-default" data-toggle="dropdown" >
+                更多
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Action</a></li>
+            </ul>
+        </div>
+
+        <br /><br /><br /><br />
+
+        <!-- 
+            向上拉
+            dropup
+         -->
+         <div class="dropup">
+            <button class="btn btn-default" data-toggle="dropdown" >
+                更多
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Action</a></li>
+            </ul>
+        </div>
+
+
+        <!-- 
+            下标项标题
+            分隔线
+            .dropdown
+            .dropdown-menu
+            .dropdown-header
+            .divider
+        -->
+         <br /><br />
+         <div class="dropdown">
+            <button class="btn btn-default" data-toggle="dropdown">
+                更多
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li class="dropdown-header">Action Header</li>
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Action</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Action Header</li>
+                <li><a href="#">Action</a></li>
+            </ul>
+         </div>
+
+
+
+        <p>----------------------------------------------------------------------------</p>
+        <p class="lead">练习</p>
+
+        <div class="dropdown">
+            <button class="btn btn-default" data-toggle="dropdown">
+                更多
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li class="dropdown-header">后台开发语言</li>
+                <li><a href="#">Java</a></li>
+                <li><a href="#">C++</a></li>
+                <li><a href="#">C#</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">前端开发语音</li>
+                <li><a href="#">html</a></li>
+                <li><a href="#">CSS</a></li>
+                <li><a href="#">JavaScript</a></li>
+            </ul>
+        </div>
+        
+        
+
+    </div>
+</body>
+</html>

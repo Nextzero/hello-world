@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+
+    <!--
+        需要额外引入angular-route包
+    -->
+    <script src="../libs/angularjs/angular-route.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>路由 - 入门</h3>
+        </div
+        >
+        <!-- 
+            导航条
+            布局请参考bootstrap
+            http://v3.bootcss.com/components/#navbar
+         -->
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mynavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                </div>
+
+                <div id="mynavbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active" ng-click="showForm($event)"><a href="">Form</a></li>
+                        <li ng-click="showTable($event)"><a href="" >Table</a></li>
+                        <li ng-click="showRedirect($event)"><a href="">redirectToTable</a></li>
+                        <li><a href="">凑数的</a></li>
+                        <li><a href="">凑数的</a></li>
+                        <li><a href="">凑数的</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 
+            ng-view是由ngRoute模块提供的一个特殊指令，它的独特作用是在HTML中给$route对应的视图内容占位。
+            它会创建自己的作用域并将模板嵌套在内部。
+
+            ngView遵循以下原则：
+            > 每次触发$routeChangeSuccess事件，视图都会更新。
+            > 如果某个模板同当前的路由相关联：
+                >> 创建一个新的作用域；
+                >> 移除上一个视图，同时上一个作用域也会被清除；
+                >> 将新的作用域同当前模板关联在一起；
+                >> 如果路由中有相关的定义，那么就把对应的控制器同当前作用域关联起来；
+                >> 触发$viewContentLoaded事件；
+                >> 如果提供了onload属性，调用该属性所指定的函数。
+
+            - 路由需要串联的东西：
+                页面
+                作用域
+                Controller
+        -->
+        <ng-view></ng-view>
+    </div>
+</body>
+
+<script>
+    //注明依赖模块ngRoute
+    var app = angular.module('myApp', ['ngRoute']);
+
+    app.run(function($rootScope, $location){
+
+        $rootScope.$on('$routeChangeStart', function(evt, next, current){
+            console.log("AngularJS在路由变化之前会广播$routeChangeStart事件");
+        });
+
+        $rootScope.$on('$routeChangeSuccess', function(evt,next,previous){
+            console.log('AngularJS会在路由的依赖被加载后广播$routeChangeSuccess事件。');
+        });
+    });
+
+    //通过config（）方法进行路由配置
+    app.config(function($routeProvider){
+
+        $routeProvider
+            /**
+             * 第一个参数是路由路径，这个路径会与$location.path进行匹配，$location.path也就是当前URL的路径
+             * 可以在URL中存储参数，参数需要以冒号开头（例如:name），用$routeParams读取这些参数。
+             * 
+             * 第二个参数是配置对象，决定了当第一个参数中的路由能够匹配时具体做些什么。配置对象中可以进行设置的属性包括controller、template、templateURL、resolve、redirectTo和reloadOnSearch。
+             */
+            .when('/',{
+                templateUrl: 'page/form.html',
+                // 将模板与控制器绑定
+                controller: 'formController' 
+            })
+            // : 后面可以带上参数，AngularJS就会把它解析出来并传递给$routeParams
+            // AngularJS会在$routeParams中添加一个名为name的键，它的值会被设置为加载进来的URL中的值。
+            // 关于传递多个变量：https://docs.angularjs.org/api/ngRoute/service/$routeParams   Example
+            .when('/table/:name', {
+                templateUrl: 'page/table.html',
+                controller: 'tableController'
+            })
+            .when('/test',{
+                //重定向
+                redirectTo: '/table'
+            })
+            .otherwise('/', {
+                templateUrl: 'page/form.html',
+                controller: 'formController'
+            })
+    });
+
+
+    //定义主controller，用于处理导航相关事件
+    app.controller('myController', function ($scope, $location) {
+        //关联导航点击事件，注意$event对象
+        $scope.showForm = function($event){
+            // angular不建议在这里直接用jquery操作DOM
+            $($event.currentTarget).siblings().removeClass('active');
+            $($event.currentTarget).addClass('active');
+
+            $location.path("/");
+        };
+        $scope.showTable = function($event){
+            $($event.currentTarget).siblings().removeClass('active');
+            $($event.currentTarget).addClass('active');
+
+            //传参！！！注意，这里并没有:
+            $location.path("/table/myangularjs");
+        }
+        $scope.showRedirect = function(){
+            $location.path('/test');
+        }
+    });
+
+
+    //定义form.html对应的控制器
+    app.controller('formController', function($scope){
+        console.log("定义formController时打印，用于证明当视图切换时，controller的生命周期");
+
+        $scope.onFormClick = function(){
+            alert('form');
+        }
+    });
+
+
+    //定义table.html对应的控制器
+    app.controller('tableController', function($scope, $routeParams){
+        console.log("定义tableController时打印，用于证明当视图切换时，controller的生命周期");
+        console.log($routeParams.name);
+
+
+        $scope.onTableClick = function(){
+            // AngularJS会在$routeParams中添加一个名为name的键，它的值会被设置为加载进来的URL中的值。
+            alert('table' +  $routeParams.name);
+        }
+    });
+    
+</script>
+
+</html>

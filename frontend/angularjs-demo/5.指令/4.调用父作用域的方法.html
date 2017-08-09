@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>指令 - 调用父作用域的方法</h3>
+        </div>
+        
+
+        <!--
+            当指令内需要调用外层scope的方法时，可通过&进行映射，同时可以将指令内的数据通过函数调用的方式传递给外层scope。
+
+            这个场景有点类似于：
+            指令内部封装了一系列逻辑，但完成某功能后，通过指定的方法回调，将结果通知给外界。
+
+            映射逻辑与前面提到的作用域对象映射一致。
+
+            !!!!注意参数的传递:
+            外层通过message作为key值，获取传递出来的person对象
+        -->
+        <div>
+            <my-hello test-show="showTips(message)"></my-hello>
+        </div>
+    </div>
+</body>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $filter) {
+        $scope.showTips = function(person){
+            alert("这里是myController的showTips方法:" + person.name + "," + person.age);
+        }
+    });
+
+    app.directive('myHello', function($interval){
+
+        return {
+            restrict: "EA",
+            scope: {
+                myShow: '&testShow'
+            },
+            templateUrl: "template/button.html",
+            link: function(scope){
+                scope.person = {
+                    name: "angular",
+                    age: 3
+                }
+            }
+        };
+    });
+</script>
+
+</html>
