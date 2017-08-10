@@ -49,7 +49,9 @@ AngularJS实战
         入门
     
     promise
-        
+
+    http
+
     
 
 

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+    <style>
+        .chunk{
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>Http</h3>
+        </div>
+
+        <button class="btn btn-default" ng-click='reqJson()'>点击发送HTTP请求</button>
+    </div>
+</body>
+
+<script>
+    var app = angular.module('myApp',[]);
+    app.controller('myController', ['$scope','$http', function($scope,$http){
+        $scope.reqJson = function(){
+            //可设置请求对象
+            $http({
+                method: 'POST',
+                url: 'api/test?a=1&b=2',//请求是假的
+                headers: {
+                   'Content-Type': 'application/json',
+                   'hehe': '111',
+                   'Accept': 'application/json, text/plain, */*'
+                },
+                data: {
+                    name: '111',
+                    version: 'v1.0'
+                }
+            }).success(function(data, status, headers, config){
+                console.log('success');
+            }).error(function(data, status, headers, config){
+                console.log('error');
+            });
+
+
+            /**
+             * 使用简化api
+             * 第二个参数对象将自动转换为json
+             * HTTP请求头将自动加上json
+             */
+            $http.post('api/test',{name: '111'}).then(function(){
+                console.log("success");
+            },function(){
+                console.log("error")
+            });
+        }
+    }]);
+</script>
+</html>
