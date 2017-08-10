@@ -47,6 +47,12 @@
         //提示
         $scope.tips = [];
 
+        /*
+        then(successFn, errFn, notifyFn)
+            无论promise成功还是失败了，当结果可用之后，then都会立刻异步调用successFn或者errFn。
+            这个方法始终用一个参数来调用回调函数：结果，或者是拒绝的理由。
+            在promise被执行或者拒绝之前，notifyFn回调可能会被调用0到多次，以提供过程状态的提示。
+        */
         downloadService.download($scope.needLoad)
             .then(function(){
                 console.log("全部加载完成");
@@ -88,5 +94,25 @@
         }
         return downloadService;
     }]);
+
+
+    //原生promise
+    // var imgUrl = '1.jpg';
+    // var imgPromise = new Promise(function(resolve, reject) {
+    //     var image = new Image();
+    //     image.onload = function() {
+    //         resolve(image);
+    //     };
+    //     image.onerror = function() {
+    //         reject(new Error('Could not load image at ' + imgUrl));
+    //     };
+    //     image.src = imgUrl;
+    // });
+
+    // imgPromise.then(function(){
+    //     console.log('图片加载成功');
+    // },function(e){
+    //     console.log('呃呃呃呃呃呃' + e);
+    // })
 </script>
 </html>
