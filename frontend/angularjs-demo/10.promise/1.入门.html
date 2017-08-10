@@ -9,6 +9,11 @@
     <script src="../libs/jquery/jquery.min.js"></script>
     <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
     <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+    <style>
+        .chunk{
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -16,45 +21,72 @@
         <div class="page-header">
             <h3>Promise</h3>
         </div>
+
+        <div class="row">
+            <dir class="col-md-10">
+                 <img class='img-responsive chunk' ng-src="{{item}}" alt="" ng-repeat="item in loaded"> 
+            </dir>
+            <div class="col-md-2">
+                 <p ng-repeat="tip in tips">{{tip}}</p> 
+            </div>
+        </div>
     </div>
 </body>
 
 <script>
     var app = angular.module('myApp',[]);
-    app.controller('myController', function($scope){
+    app.controller('myController', ['$scope','downloadService', function($scope,downloadService){
+        //需要加载的图片
+        $scope.needLoad = [
+            'res/1.jpg',
+            'res/2.jpg',
+            'res/3.jpg'
+        ];
+        //已加载的图片
+        $scope.loaded = [];
+        //提示
+        $scope.tips = [];
 
-    });
-  
-    var promise = new Promise(function(resolve, reject) {
-        console.log('Promise');
-        resolve();
-    });
+        downloadService.download($scope.needLoad)
+            .then(function(){
+                console.log("全部加载完成");
+                $scope.tips.push("全部加载完成");
+            },function(){
+                $scope.tips.push("加载失败");
+            },function(item){
+                console.log(item + "已加载");
+                $scope.loaded.push(item);
+                $scope.tips.push(item + "已加载");
+            })
+    }]);
 
-    promise.then(function() {
-        console.log('Resolved.');
-    });
-
-    console.log('Hi!');
-
-    var imgUrl = '1.jpg';
-    var imgPromise = new Promise(function(resolve, reject) {
-        var image = new Image();
-
-        image.onload = function() {
-            resolve(image);
-        };
-
-        image.onerror = function() {
-            reject(new Error('Could not load image at ' + url));
-        };
-
-        image.src = url;
-    });
-
-    imgPromise.then(function(){
-        console.log('图片加载成功');
-    },function(){
-        console.log('呃呃呃呃呃呃');
-    })
+    //定义一个同时下载多个文件的服务
+    app.factory('downloadService', ['$q', function($q){
+        var downloadService = {
+            download: function(res){
+                var d = $q.defer();
+                var total = 0;
+                
+                for(var i=0; i<res.length; i++){
+                    var image = new Image();
+                    image.imgUrl = res[i];
+                    image.onload = function() {
+                        total++;
+                        d.notify(this.imgUrl);
+                        if(total == res.length){
+                            d.resolve();
+                        }
+                    };
+                    image.onerror = function() {
+                        d.reject(new Error('Could not load image at ' + this.imgUrl));
+                    };
+                    image.src = image.imgUrl;
+                }
+               
+                return d.promise;
+            }
+        }
+        return downloadService;
+    }]);
 </script>
 </html>
