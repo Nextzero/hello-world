@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>Promise</h3>
+        </div>
+    </div>
+</body>
+
+<script>
+    var app = angular.module('myApp',[]);
+    app.controller('myController', function($scope){
+
+    });
+  
+    var promise = new Promise(function(resolve, reject) {
+        console.log('Promise');
+        resolve();
+    });
+
+    promise.then(function() {
+        console.log('Resolved.');
+    });
+
+    console.log('Hi!');
+
+    var imgUrl = '1.jpg';
+    var imgPromise = new Promise(function(resolve, reject) {
+        var image = new Image();
+
+        image.onload = function() {
+            resolve(image);
+        };
+
+        image.onerror = function() {
+            reject(new Error('Could not load image at ' + url));
+        };
+
+        image.src = url;
+    });
+
+    imgPromise.then(function(){
+        console.log('图片加载成功');
+    },function(){
+        console.log('呃呃呃呃呃呃');
+    })
+</script>
+</html>
