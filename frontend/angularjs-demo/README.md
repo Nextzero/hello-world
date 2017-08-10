@@ -48,6 +48,9 @@ AngularJS实战
     $scope事件
         入门
     
+    promise
+        
+    
 
 
 
