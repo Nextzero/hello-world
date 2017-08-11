@@ -10,6 +10,19 @@
     <script src="../libs/jquery/jquery.min.js"></script>
     <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
     <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+    <!--
+        https://mgcrea.github.io/angular-strap/
+        bootstrap3和angular结合
+    -->
+    <script src="../libs/angularjs/angular-strap/angular-strap.js"></script>
+    <script src="../libs/angularjs/angular-strap/angular-strap.tpl.js"></script>
+
+     <style>
+        .modal-backdrop.am-fade {
+            opacity: .5;
+            transition: opacity .15s linear;
+        }
+    </style>
 </head>
 
 <body>
@@ -18,15 +31,120 @@
             <h3>弹窗</h3>
         </div>
 
-        <button class="btn btn-primary">点击出弹窗</button>
+        <!--
+            弹窗：
+            - 弹窗内的angular作用域
+            - 如何传递参数给弹窗
+            - 如何知道弹窗执行了"ok",还是"cancel"
+
+            1.在单独html文件中写好弹窗内容（呃，html文件开头不能有注释！），也可以包含在'text/ng-template'中。
+            2.弹窗内容可使用bootsrap进行布局，注意：并不需要添加data-dismiss等属性
+            3.注入module:'mgcrea.ngStrap'，注入service: $modal。
+                关于$modal，由源码可知：通过provider方法进行注册，$get方法返回的是：    function ModalFactory(config) {...}    return ModalFactory;
+                $modal函数接收一个配置对象参数。
+            4.配置对象参数：
+                scope: 
+                    为弹窗指定作用域，实际上将创建一个新的子作用域（var scope = $modal.$scope = options.scope && options.scope.$new() || $rootScope.$new();）
+                    视图所绑定的数据模型，都将来自于该scope(或父作用域...)， 注意：scope的继承特性！！！
+                controller: 
+                    如前所述，controller方法是用来对scope进行初始化的。当点击弹窗，将执行该方法。
+                templateUrl: 
+                    弹窗内容，可以是url指向一个独立的html，也可以是一个template id (包含在'text/ng-template')。
+                    注意：该URL引用的内容，其布局必须是bootstrap模态框（.modal .modal-dialog .modal-content .modal-header .modal-body 等等）！
+                contentTemplate：
+                    弹窗内容，可以是url指向一个独立的html，也可以是一个template id (包含在'text/ng-template')。
+                    注意：与templateUrl不同，内容不限定为bootstrap的div.dialog，其内容将被填充到div.modal-body中。
+                    contentTemplate与templateUrl可以共用，templateUrl是一个空的bootstrap dialog，contentTemplate则只负责实际内容。
+                onShow，onBeforeShow，onHide，onBeforeHide:
+                    回调函数，当弹窗出生相应变化时，触发回调。
+                prefixEvent:
+                    如前所述，当弹窗发生相应变化时（show, hide）,弹窗的作用域会发出相应的事件$scope.$emit(''), .hide.before' '.hide' '.show.before' and '.show'
+                    默认情况下几个事件的前缀为modal，即事件的完全名称为modal.hide.before  ....
+                    prefixEvent可用于指定该前缀。
+                id:
+                    标识
+                keyboard:
+                    为true时，可通过esc键关闭弹窗。
+                backdrop
+                    ?
+            5.$modal方法：
+                hide()
+                show()
+                toggle()
+            6.样式：
+                当窗口弹出时，阴影背景的class为.modal-backdrop.am-fade， 可对该类自定义样式
+        -->
+        <button class="btn btn-primary" ng-click="showFirstModal()">点击出弹窗</button>
+
+        <button class="btn btn-danger" ng-click="showSecondModal()">点击出弹窗</button>
     </div>
 </body>
 
 <script>
-    var app = angular.module('myApp', []);
-    app.controller('myController', function ($scope) {
-       
-    });
-</script>
+        var app = angular.module('myApp', ['mgcrea.ngStrap']);
 
+        app.controller('myController', function ($scope, $modal) {
+
+            //first modal
+            $scope.modalInit = function($scope){
+                //初始化modal的scope
+                $scope.save = function(){
+                    console.log("11111111111111111");
+                    this.$hide();
+                }
+                $scope.title = "我还是个标题";
+            }
+            var firstModal = $modal({
+                scope: $scope,  //当前控制器scope作用域modal的父作用域
+                title: '我是个标题',
+                controller: $scope.modalInit,
+                templateUrl: 'template/form-modal.html', 
+                show: false
+            });
+            $scope.showFirstModal = function () {
+                firstModal.$promise.then(firstModal.toggle);
+            };
+
+            //second modal
+             var secondModal = $modal({
+                scope: $scope,  //当前控制器scope作用域modal的父作用域
+                title: '斧标驱风油',
+                contentTemplate: 'template/form.html',  //注意contentTemplate与templateUrl的区别!
+                show: false 
+            });
+            $scope.showSecondModal = function () {
+                secondModal.$promise.then(secondModal.show);
+            };
+        });
+</script>
+<!--注意：type="text/ng-template" id=""
+<script type="text/ng-template" id="modal1.html">
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" ng-show="title">
+                    <button type="button" class="close" ng-click="$hide()">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body" ng-show="content">
+ 
+                    <h4>Text in a modal</h4>
+                    <p></p>
+                    <pre>2 + 3 = {{ 2 + 3 }}</pre>
+ 
+                    <h4>Popover in a modal</h4>
+                    <p>This <a href="#" role="button" class="btn btn-default popover-test" data-title="A Title" data-content="And here's some amazing content. It's very engaging. right?" bs-popover>button</a> should trigger a popover on click.</p>
+ 
+                    <h4>Tooltips in a modal</h4>
+                    <p><a href="#" class="tooltip-test" data-title="Tooltip" bs-tooltip>This link</a> and <a href="#" class="tooltip-test" data-title="Tooltip" bs-tooltip>that link</a> should have tooltips on hover.</p>
+ 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="$hide()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script> -->
 </html>
