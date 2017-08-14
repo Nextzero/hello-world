@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+    
+    <!-- 
+        ui-router需要额外引入的包
+        需要先引入angular.min.js
+    -->
+    <script src="../libs/angularjs/angular-ui-router.min.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>UI-Router</h3>
+        </div>
+
+        <!--
+        -->
+        <div ui-view="header"></div>
+        <div ui-view="content"></div>
+        <div ui-view="footer"></div>
+    </div>
+</body>
+
+<script>
+        var app = angular.module('myApp', ['ui.router']);
+
+        app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+            $urlRouterProvider.otherwise('/');
+
+            $stateProvider
+                .state('home', {
+                    url: '/',
+                    views: {
+                        'header': {
+                            templateUrl: 'template3/header.html'
+                        },
+                        'content': {
+                            templateUrl: 'template3/content.html'
+                        },
+                        'footer': {
+                            templateUrl: 'template3/footer.html'
+                        }
+                    }
+                })
+                .state('dashboard', {
+                    url: '/dashboard',
+                    views: {
+                        'header': {
+                            templateUrl: 'template3/header.html'
+                        },
+                        'content': {
+                            templateUrl: 'template3/dashboard.html',
+                        }
+                    }
+
+                })
+                .state('campaigns', {
+                    url: '/campaigns',
+                    views: {
+                        'content': {
+                            templateUrl: 'template3/campaigns.html',
+                        },
+                        'footer': {
+                            templateUrl: 'template3/footer.html'
+                        }
+                    }
+                })
+        }])
+
+        app.controller('myController', function ($scope) {
+
+        });
+</script>
+
+</html>

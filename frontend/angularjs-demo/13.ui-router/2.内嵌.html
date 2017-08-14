@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+    
+    <!-- 
+        ui-router需要额外引入的包
+        需要先引入angular.min.js
+    -->
+    <script src="../libs/angularjs/angular-ui-router.min.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>UI-Router</h3>
+        </div>
+
+        <!--
+            路由：
+                当触发某状态时，需要决定两个事情：
+                1.使用什么模板来进行填充（templateUrl）
+                2.填充到哪里去（ui-view）[不同于ng-view，ng-view只能有一个]
+
+            1.在本页面中，存在一个ui-view，当状态切换到shows时，将templateUrl内容填充到这个ui-view的位置
+            2.在show.html页面中，左侧为ul列表，右侧又是一个ui-view，当状态切换到shows.detail时，angular按照"父状态名.子状态名"的方式来理解该状态，
+            此时则可知道将templateUrl内容填充到show.html文件中的ui-view，而不会替换外层的<div id="content" ui-view></div>。
+            
+        -->
+        <p>Hello World</p>
+        <div id="content" ui-view></div>
+    </div>
+</body>
+
+<script>
+        var app = angular.module('myApp', ['ui.router']);
+
+        app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
+            $urlRouterProvider.otherwise('/');//建立一个默认路由，用于管理未知的URL，统一跳转到'/'
+
+            $stateProvider
+                .state('shows', {
+                    url: '/shows',
+                    templateUrl: 'template2/shows.html',
+                    controller: 'showsController'
+                })
+                .state('shows.detail', {
+                    url: '/detail/:id',
+                    templateUrl: 'template2/shows-detail.html',
+                    controller: 'showsDetailController'
+                });
+        }]);
+
+
+        app.factory('showService', function(){
+            var shows = [{
+                id: 1,
+                name: 'Walking Dead',
+                description: 'The Walking Dead is an American post-apocalyptic horror drama television series developed by Frank Darabont. It is based on the comic book series of the same name by Robert Kirkman, Tony Moore, and Charlie Adlard. It stars Andrew Lincoln as sheriff\'s deputy Rick Grimes, who awakens from a coma to find a post-apocalyptic world dominated by flesh-eating zombies.'
+            },
+            {
+                id: 2,
+                name: 'Breaking Bad',
+                description: 'Breaking Bad is an American crime drama television series created and produced by Vince Gilligan. The show originally aired on the AMC network for five seasons, from January 20, 2008 to September 29, 2013. The main character is Walter White (Bryan Cranston), a struggling high school chemistry teacher who is diagnosed with inoperable lung cancer at the beginning of the series.'
+            },
+            {
+                id: 3,
+                name: '7D',
+                description: 'The 7D is an American animated television series produced by Disney Television Animation, and broadcast on Disney XD starting in July 7, 2014. It is a re-imagining of the titular characters from the 1937 film Snow White and the Seven Dwarfs by Walt Disney Productions'
+            }];
+
+            return {
+                list: function () {
+                    return shows;
+                },
+                find: function (id) {
+                    for(var index=0; index<shows.length; index++){
+                        if(shows[index].id == id){
+                            return shows[index];
+                        }    
+                    }
+                }
+            }
+        })
+
+        app.controller('myController', function ($scope) {
+
+        });
+
+        app.controller('showsController', function ($scope, showService) {
+            $scope.shows = showService.list();            
+        });
+
+        app.controller('showsDetailController', ['$scope','$stateParams', 'showService', function($scope, $stateParams, showService) {
+            $scope.selectedShow = showService.find($stateParams.id);
+        }]);
+</script>
+
+</html>
