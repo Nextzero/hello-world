@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- 
+        ui-router需要额外引入的包
+        需要先引入angular.min.js
+    -->
+    <script src="../libs/angularjs/angular-ui-router.min.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>UI-Router</h3>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-2">
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active" ng-click="toHome($event)"><a href="#">首页</a></li>
+                    <li ng-click="toProfile($event)"><a href="#">个人资料</a></li>
+                    <li ng-click="toMessage($event)"><a href="#">消息中心</a></li>
+                </ul>
+            </div>
+            <div class="col-md-10">
+                <div ui-view></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var app = angular.module('myApp', ['ui.router']);
+
+    app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise('/');
+
+        $stateProvider
+            .state('home', {
+                url: '/home',
+                templateUrl: 'template5/home-index.html'
+            })
+            .state('home.trend',{
+                url: '/trend',
+                templateUrl: 'template5/home-trend.html'
+            })
+            .state('home.balance',{
+                url: '/balance',
+                templateUrl: 'template5/home-balance.html'
+            })
+            .state('profile', {
+                url: '/profile',
+                templateUrl: 'template5/profile-index.html'
+            })
+            .state('profile.password',{
+                url: '/password',
+                templateUrl:'template5/profile-password.html'
+            })
+            .state('profile.info',{
+                url: '/info',
+                templateUrl:'template5/profile-info.html'
+            })
+            .state('message', {
+                url: '/message',
+                templateUrl: 'template5/message-index.html'
+            })
+            .state('message.read', {
+                url: '/read',
+                templateUrl: 'template5/message-read.html',
+            })
+            .state('message.unread', {
+                url: '/unread',
+                templateUrl: 'template5/message-unread.html'
+            })
+            .state('message.history', {
+                url: '/history',
+                templateUrl: 'template5/message-history.html'
+            })
+    }])
+
+    app.controller('myController', function ($scope, $state) {
+        $scope.toHome = function($event){
+            $($event.currentTarget).siblings().removeClass('active');
+            $($event.currentTarget).addClass('active');
+            $state.go('home');
+        }
+
+        $scope.toProfile = function($event){
+            $($event.currentTarget).siblings().removeClass('active');
+            $($event.currentTarget).addClass('active');
+            $state.go('profile');
+        }
+
+        $scope.toMessage = function($event){
+            $($event.currentTarget).siblings().removeClass('active');
+            $($event.currentTarget).addClass('active');
+            $state.go('message');
+        }
+    });
+</script>
+
+</html>

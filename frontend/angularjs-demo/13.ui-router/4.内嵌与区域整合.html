@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- 
+        ui-router需要额外引入的包
+        需要先引入angular.min.js
+    -->
+    <script src="../libs/angularjs/angular-ui-router.min.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>UI-Router</h3>
+        </div>
+
+        <!--
+            内嵌与区域整合!
+
+            再次强调：
+                路由：
+                当触发某状态时，需要决定两个事情：
+                1.使用什么模板来进行填充（templateUrl）
+                2.填充到哪里去（ui-view）[不同于ng-view，ng-view只能有一个]
+
+            
+        -->
+        <div ui-view="header"></div>
+        <div ui-view="content"></div>
+        <div ui-view="footer"></div>
+    </div>
+</body>
+
+<script>
+    var app = angular.module('myApp', ['ui.router']);
+
+    app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise('/');
+
+        $stateProvider
+            .state('app', {
+                url: '/',
+                views: {
+                    /*
+                    在当前html中定义了3个ui-view，
+                    当切换到'app'状态时，通过views对象，指定每个ui-view所需要填充的值。如下所示：
+                    */
+                    'header': {
+                        templateUrl: 'template4/header.html'
+                    },
+                    'content': {
+                        templateUrl: 'template4/content.html'
+                    },
+                    'footer': {
+                        templateUrl: 'template4/footer.html'
+                    }
+                }
+            })
+            .state('app.dashboard', {
+                url: 'dashboard',
+                views: {
+                    /*
+                    关键：在该状态下，templateUrl需要替换掉哪个ui-view ?
+                    
+                    如2.内嵌.html中所述，app.dashboard表示内嵌视图，即在app状态下的页面里查找ui-view，
+                    而app状态下，被划分成了多个区域，因此通过content@来指明，templateUrl仅替换掉ui-view=content部分。
+
+                    尽管这里只指定了一个区域，但并不会出现'3.多样化视图.html'中所描述的情况 -- 未明确指定templateUrl的区域不可见。
+
+                    注意
+                    @后面没有跟任何状态名，意味着是在4.内嵌与区域整合.html范围内查找名叫content的ui-view
+                    */
+                    'content@': {
+                        templateUrl: 'template4/dashboard.html',
+                    }
+                }
+
+            })
+            .state('app.campaigns', {
+                url: 'campaigns',
+                views: {
+                    'content@': {
+                        templateUrl: 'template4/campaigns.html',
+                        controller: 'campaignsController'
+                    }
+                }
+
+            })
+            .state('app.campaigns.detail',{
+                url: '/detail',
+                views: {
+                    /**
+                    注意!!
+                    @后面跟着状态名：app.campaigns，意味着是在app.campaigns状态下的页面范围内查找名叫campaview的ui-view
+                    */
+                    'campaview@app.campaigns':{
+                        templateUrl: 'template4/campaigns-detail.html',
+                    }
+                }
+            })
+            .state('app.subscribers', {
+                url: 'subscribers',
+                views: {
+                    'content@': {
+                        templateUrl: 'template4/subscribers.html',
+                        controller: 'subscribersController'
+                    }
+                }
+
+            })
+            .state('app.subscribers.detail', {
+                url: '/:id',
+                views: {
+                    'detailview@app.subscribers': {
+                        templateUrl: 'template4/subscriber-detail.html',
+                        controller: 'subscribersDetailsController'
+                    }
+                }
+            });
+    }])
+
+    app.factory('subscriberService', function(){
+        var subscribers = [
+            {
+                id: 111,
+                name : '111',
+                email: '111@qq.com'
+            },
+            {
+                id: 222,
+                name: '222',
+                email: '222@qq.com'
+            },
+            {
+                id: 333,
+                name: '333',
+                email: '333@qq.com'
+            }
+        ];
+
+        return {
+            list: function(){
+                return subscribers;
+            },
+
+            find: function(id){
+                for(var i=0; i<subscribers.length; i++){
+                    if(subscribers[i].id == id){
+                        return subscribers[i];
+                    }
+                }
+            }
+        }
+    });
+
+    app.controller('myController', function ($scope) {
+
+    });
+
+    app.controller('subscribersController', function($scope, subscriberService){
+        $scope.subscribers = subscriberService.list();
+    });
+
+    app.controller('subscribersDetailsController', function($scope, $stateParams, subscriberService){
+        console.log($stateParams.id);
+
+        $scope.selected = subscriberService.find($stateParams.id);
+    });
+
+    app.controller('campaignsController', function($scope, $state){
+        $scope.onclick = function(){
+             $state.go('app.campaigns.detail');
+            //$state.go('.detail');都可行
+        }
+    });
+</script>
+
+</html>

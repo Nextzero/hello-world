@@ -33,6 +33,7 @@
         
         <!-- <div ui-view></div> -->
         <!-- 
+            若写两个ui-view，则
             当切换到某状态时（比如：form），将显示两个form.html
             即：会将两个ui-view都替换掉！ 
         -->
@@ -62,7 +63,7 @@
         app.controller('myController', function ($scope, $state) {
 
             $scope.toForm= function(){
-                $state.go('form');
+                $state.go('form'); //跳转到指定状态
             }
 
             $scope.toTable= function(){

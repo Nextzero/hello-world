@@ -25,6 +25,17 @@
         </div>
 
         <!--
+            再次强调：
+                路由：
+                当触发某状态时，需要决定两个事情：
+                1.使用什么模板来进行填充（templateUrl）
+                2.填充到哪里去（ui-view）[不同于ng-view，ng-view只能有一个]
+
+            并列多个不同名称的ui-view，多个ui-view将界面划分为几大区域。
+            当触发某个状态时，比如'home',需要通过views对象，指明每一个区域使用什么templateUrl内容来进行替换。
+
+            需要注意的是，当view对象中没有填充一个区域的templateUrl时，那么用户导航到该路由时，将不会显示。比如'campaigns'状态时，没有指定header区域的内容。
+
         -->
         <div ui-view="header"></div>
         <div ui-view="content"></div>
