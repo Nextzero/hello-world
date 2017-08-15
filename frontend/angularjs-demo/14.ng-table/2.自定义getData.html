@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- 使用ng-table需要引入的包 -->
+    <link rel="stylesheet" href="../libs/angularjs/ng-table/css/ng-table.css">
+    <script src="../libs/angularjs/ng-table/js/ng-table.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>ng-table</h3>
+        </div>
+
+        <table ng-table="myTableParams" class="table">
+        <tr ng-repeat="user in $data">
+            <td title="'Name'">
+                {{user.name}}</td>
+            <td title="'Age'">
+                {{user.age}}</td>
+        </tr>
+        </table>  
+    </div>
+</body>
+
+<script>
+    var app = angular.module('myApp', ['ngTable']);
+
+    app.factory('myService', function () {
+        var data = [
+           
+        ];
+
+        for(var i=0; i<100; i++){
+            data.push({
+                name: "name" + i,
+                age: i % 50
+            })
+        }
+
+        return {
+            list: function(){
+                return data;
+            },
+            getTotal: function(){
+                return data.length;
+            },
+            getData: function(count, page){
+                var begin = count*(page-1);
+                var end = begin + count;
+                var d = data.slice(begin, end);
+                return d;
+            }
+        }
+    });
+
+    app.controller('myController', function ($scope,NgTableParams,myService) {
+
+
+        //根据getData函数，指明获取数据的方法。
+        $scope.myTableParams = new NgTableParams({}, { 
+
+            getData:function(tblParam){
+                console.log(tblParam);
+                // count: tblParam.count(),
+                // 当前一页请求的大小
+
+                // page: tblParam.page(),
+                // 当前页数，下标从1开始
+
+                tblParam.total(myService.getTotal());//设置总记录数
+                return myService.getData(tblParam.count(), tblParam.page());//返回当前分页数据
+            }
+        });
+    });
+
+</script>
+
+</html>

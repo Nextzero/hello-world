@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- 使用ng-table需要引入的包 -->
+    <link rel="stylesheet" href="../libs/angularjs/ng-table/css/ng-table.css">
+    <script src="../libs/angularjs/ng-table/js/ng-table.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>ng-table</h3>
+        </div>
+
+        <table ng-table="myTableParams" class="table" show-filter="true">
+        <tr ng-repeat="user in $data">
+            <td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
+                {{user.name}}</td>
+            <td title="'Age'" filter="{ age: 'number'}" sortable="'age'">
+                {{user.age}}</td>
+        </tr>
+        </table>  
+    </div>
+</body>
+
+<script>
+    var app = angular.module('myApp', ['ngTable']);
+
+    app.factory('myService', function () {
+        var data = [
+            { name: "Moroni", age: 50 },
+            { name: "nextzero", age: 20 },
+            { name: "jamse", age: 20 },
+            { name: "kobe", age: 35 },
+            { name: "yaoming", age: 9 },
+            { name: "vscode", age: 9 },
+            { name: "aaaaa", age: 13 },
+            { name: "bbbbb", age: 9 },
+            { name: "eeeeee", age: 13 },
+            { name: "fffff", age: 9 },
+            { name: "hhhhhh", age: 9 },
+            { name: "evernote", age: 13 },
+        ];
+
+        for(var i=0; i<100; i++){
+            data.push({
+                name: "name" + i,
+                age: i % 50
+            })
+        }
+
+        return {
+            list: function(){
+                return data;
+            }
+        }
+    });
+
+    app.controller('myController', function ($scope,NgTableParams,myService) {
+
+        $scope.filterObj = {
+            name: 'next'
+        }
+
+        //通过dataset指定数据集
+        $scope.myTableParams = new NgTableParams({}, { dataset: myService.list() });
+    });
+
+</script>
+
+</html>
