@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+  
+    <!-- 需要额外引入的包 -->
+    <script src="../libs/angularjs/angular-cookies.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>cookies</h3>
+        </div>
+
+        <button class="btn btn-primary" ng-click="readCookies()">readCookies</button>
+        <button class="btn btn-primary" ng-click="writeCookies()">writeCookies</button>
+        <button class="btn btn-danger" ng-click="sendHttp()">sendHttp</button>
+    </div>
+</body>
+
+<script>
+        var app = angular.module('myApp', ['ngCookies']);
+
+        app.controller('myController', function ($scope, $cookies, $http) {
+
+            $scope.readCookies = function(){
+                var all = $cookies.getAll();
+                console.log(all);
+            }
+
+            $scope.writeCookies = function(){
+                $cookies.put('czhc', 'aaaaaaaaaaaaaaaaaaa' + new Date());
+                $cookies.put('domi', new Date());
+            }
+
+            $scope.sendHttp = function(){
+                $http.post("test",{name:1}).then(function(){
+                    console.log("success");
+                },function(){
+                    console.log("error");
+                });
+            }
+        });
+</script>
+
+</html>
