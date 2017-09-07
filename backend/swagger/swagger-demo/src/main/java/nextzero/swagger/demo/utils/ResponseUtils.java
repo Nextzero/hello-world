@@ -15,7 +15,7 @@ public class ResponseUtils {
         return response;
     }
 
-    public static BaseResponse success(Map data){
+    public static BaseResponse success(Object data){
         BaseResponse response = success();
         response.setData(data);
         return response;
