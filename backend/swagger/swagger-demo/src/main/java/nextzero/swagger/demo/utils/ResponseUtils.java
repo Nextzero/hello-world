@@ -1,7 +1,7 @@
-package nextzero.nextzero.swagger.demo.utils;
+package nextzero.swagger.demo.utils;
 
-import nextzero.nextzero.swagger.demo.domain.BaseResponse;
-import nextzero.nextzero.swagger.demo.domain.BaseResponsePage;
+import nextzero.swagger.demo.domain.BaseResponse;
+import nextzero.swagger.demo.domain.BaseResponsePage;
 
 import java.util.List;
 import java.util.Map;

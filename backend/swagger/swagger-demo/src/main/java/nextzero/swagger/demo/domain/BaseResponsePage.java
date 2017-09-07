@@ -1,4 +1,4 @@
-package nextzero.nextzero.swagger.demo.domain;
+package nextzero.swagger.demo.domain;
 
 
 public class BaseResponsePage extends BaseResponse{

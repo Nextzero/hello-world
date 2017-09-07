@@ -1,4 +1,4 @@
-package nextzero.nextzero.swagger.demo;
+package nextzero.swagger.demo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
