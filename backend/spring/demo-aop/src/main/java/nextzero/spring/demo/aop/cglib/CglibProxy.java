@@ -31,7 +31,6 @@ public class CglibProxy implements MethodInterceptor {
      * @return
      * @throws Throwable
      */
-    @Override
 	public Object intercept(Object obj, Method method, Object[] args,
 			MethodProxy proxy) throws Throwable {
         //模拟执行性能监控逻辑

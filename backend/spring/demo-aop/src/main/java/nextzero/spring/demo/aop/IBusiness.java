@@ -6,8 +6,8 @@ package nextzero.spring.demo.aop;
  */
 public interface IBusiness {
 
-    public String commitNewUser(String user, String pwd);
+    String commitNewUser(String user, String pwd);
 
 
-    public String hello(String time);
+    String hello(String time);
 }
