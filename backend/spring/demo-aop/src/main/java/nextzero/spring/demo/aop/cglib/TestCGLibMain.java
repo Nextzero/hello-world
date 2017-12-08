@@ -1,5 +1,6 @@
 package nextzero.spring.demo.aop.cglib;
 
+import net.sf.cglib.proxy.Enhancer;
 import nextzero.spring.demo.aop.BusinessImp;
 
 
@@ -11,11 +12,12 @@ import nextzero.spring.demo.aop.BusinessImp;
 public class TestCGLibMain {
 
     public static void main(String[] args){
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(BusinessImp.class);
+        enhancer.setCallback(new PerformanceWatcher());
+        BusinessImp user = (BusinessImp)enhancer.create();
 
-        CglibProxy proxy = new CglibProxy();
-
-        BusinessImp user = (BusinessImp)proxy.getProxy(BusinessImp.class);
-
+        System.out.println(user.getClass().getName());
         user.commitNewUser("czhc","123456");
     }
 }
