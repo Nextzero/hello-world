@@ -1,6 +1,9 @@
 package nextzero.swagger.demo.domain.response;
 
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel
 public class User {
     protected Integer id;
     protected String Name;
