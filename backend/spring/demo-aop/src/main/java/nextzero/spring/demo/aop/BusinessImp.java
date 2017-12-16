@@ -9,7 +9,6 @@ import java.util.Date;
  */
 public class BusinessImp implements IBusiness {
 
-    @Override
     public String commitNewUser(String user, String pwd) {
 
         System.out.println("commit new user: user=" + user + "  pwd=" + pwd);
@@ -22,8 +21,6 @@ public class BusinessImp implements IBusiness {
         return "test string";
     }
 
-
-    @Override
     public String hello(String time) {
 
         return new Date().toString();

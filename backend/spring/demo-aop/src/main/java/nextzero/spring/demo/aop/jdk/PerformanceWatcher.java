@@ -15,19 +15,15 @@ public class PerformanceWatcher implements InvocationHandler{
         this.target = target;
     }
 
-    @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         //模拟性能测试
-        System.out.println("begin ...");
-        System.out.println(proxy.getClass().getName());
-        System.out.println(method.getName());
+        long begin = System.currentTimeMillis();
 
         //通过反射调用业务对象的相应方法
         Object obj = method.invoke(target, args);
 
         //模拟性能测试
-        System.out.println(obj);
-        System.out.println("end...");
+        System.out.println(method.getName() + ": " + (System.currentTimeMillis() - begin));
         return obj;
     }
 }
