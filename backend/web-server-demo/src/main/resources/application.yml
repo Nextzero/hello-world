@@ -1,0 +1,34 @@
+server:
+    port: 9500
+    contextPath: /hd/service
+    session:
+        timeout: 1200
+
+spring:
+  application:
+    name: hd
+  datasource:
+    name: hd
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://66.112.209.221:3306/hd_oms?useSSL=false&autoReconnect=true&sessionVariables=FOREIGN_KEY_CHECKS=0&useUnicode=yes&characterEncoding=UTF-8
+    username: root
+    password: 123456
+    maxTotal: 200
+    maxIdle: 8
+    minIdle: 8
+    initialSize: 10
+    maxWaitMillis: 3000
+    validationQuery: select 1
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+
+shiro:
+    filters:
+        /sysadmin/login: anonymous
+        /**: anonymous
+
+system:
+  name: springboot
+
+

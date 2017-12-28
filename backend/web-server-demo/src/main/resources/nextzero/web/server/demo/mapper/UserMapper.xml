@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nextzero.web.server.demo.mapper.UserMapper">
+
+    <select id="getUserCredentials" parameterType="string" resultType="nextzero.web.server.demo.entity.domain.UserCredentials">
+        SELECT
+            id,
+            username,
+            status,
+            last_login_time as lastLoginTime,
+            password
+        FROM
+            user
+        WHERE
+            username=#{userName}
+    </select>
+
+    <select id="getUserUrlPermissions" parameterType="string" resultType="string">
+        SELECT
+            url
+        FROM
+            user
+            LEFT JOIN user_role ON user.id = user_role.user_id
+            LEFT JOIN role_resource ON user_role.role_id = role_resource.role_id
+            LEFT JOIN resource ON role_resource.resource_id = resource.id
+        WHERE
+            resource.active = 1 AND user.username=#{userName}
+    </select>
+
+    <select id="getUserMenu" parameterType="string" resultType="nextzero.web.server.demo.entity.domain.Menu">
+      SELECT
+        menu.id,
+        menu.name,
+        menu.parent_id as parentId,
+        menu.menu_url as menuUrl
+      FROM
+        user
+      LEFT JOIN user_role ON user.id = user_role.user_id
+      LEFT JOIN role_menu ON role_menu.role_id = user_role.role_id
+      LEFT JOIN menu ON role_menu.menu_id = menu.id
+      WHERE
+        menu.active = 1 AND user.username = #{userName}
+      ORDER BY menu.sort;
+    </select>
+    
+    <update id="updateUserPwd" parameterType="map">
+        UPDATE user SET password=#{newpwd},update_time=now() WHERE username=#{username};
+    </update>
+
+    <insert id="addUser" parameterType="nextzero.web.server.demo.entity.params.sysadmin.AddUserParams" useGeneratedKeys="true" keyProperty="id">
+      INSERT INTO user(username, password, display_name, status, phone, email, sex, birthday, create_time, update_time, remark)
+      VALUE(
+        #{username},
+        #{password},
+        #{displayName},
+        0,
+        #{phone},
+        #{email},
+        #{sex},
+        #{birthday},
+        now(),
+        now(),
+        #{remark}
+      )
+    </insert>
+
+    <insert id="addUserRoles" parameterType="nextzero.web.server.demo.entity.params.sysadmin.AddUserParams">
+        INSERT INTO user_role (user_id, role_id) VALUES
+        <foreach collection="roles" item="item" separator=",">
+            (
+            #{id},
+            #{item}
+            )
+        </foreach>
+    </insert>
+    
+    <delete id="delUser" parameterType="list">
+        DELETE FROM user WHERE id IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="delUserRoles" parameterType="list">
+        DELETE FROM user_role WHERE user_id IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    
+    <update id="updateUser" parameterType="nextzero.web.server.demo.entity.params.sysadmin.UpdateUserParams">
+        UPDATE user
+        <trim prefix="set" suffixOverrides=",">
+            update_time=now(),
+            <if test="displayName!=null">display_name=#{displayName},</if>
+            <if test="phone!=null">phone=#{phone},</if>
+            <if test="sex!=0">sex=#{sex},</if>
+            <if test="birthday!=null">birthday=#{birthday},</if>
+            <if test="remark!=null">remark=#{remark},</if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+    <select id="countUser" parameterType="nextzero.web.server.demo.entity.params.sysadmin.ListUserParams" resultType="long">
+      SELECT
+        COUNT(*)
+      FROM
+        user
+      WHERE
+      1=1
+      <if test="displayName != null">
+          and user.display_name like CONCAT('%',#{displayName},'%')
+      </if>
+    </select>
+
+    <resultMap id="user" type="nextzero.web.server.demo.entity.result.User">
+        <id property="id" column="id" />
+        <result property="username" column="username" />
+        <result property="password" column="password" />
+        <result property="displayName" column="displayName" />
+        <result property="status" column="status" />
+        <result property="phone" column="phone" />
+        <result property="email" column="email" />
+        <result property="sex" column="sex" />
+        <result property="birthday" column="birthday" />
+        <result property="createTime" column="createTime" />
+        <result property="updateTime" column="updateTime" />
+        <result property="lastLoginTime" column="lastLoginTime" />
+        <result property="remark" column="remark" />
+
+        <collection property="roles" ofType="nextzero.web.server.demo.entity.result.Role">
+            <id column="roleId" property="id" />
+            <result column="roleName" property="name" />
+        </collection>
+    </resultMap>
+
+    <select id="listUser" parameterType="nextzero.web.server.demo.entity.PageRequest" resultMap="user">
+        SELECT
+          user.id,
+          user.username,
+          user.display_name as displayName,
+          user.status,
+          user.phone,
+          user.email,
+          user.sex,
+          DATE_FORMAT(birthday,'%Y-%m-%d') AS birthday,
+          DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') AS createTime,
+          user.create_time as createTime,
+          DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') AS updateTime,
+          DATE_FORMAT(last_login_time,'%Y-%m-%d %H:%i:%s') AS lastLoginTime,
+          user.remark,
+          role.id as roleId,
+          role.name as roleName
+        FROM
+          user
+        LEFT JOIN user_role ON user.id = user_role.user_id
+        LEFT JOIN role ON user_role.role_id = role.id
+        WHERE
+        1=1
+        <if test="params.displayName != null">
+            AND user.display_name like CONCAT('%',#{params.displayName},'%')
+        </if>
+    </select>
+
+    <select id="listRoles" resultType="nextzero.web.server.demo.entity.result.Role">
+        SELECT
+          id,
+          name
+        FROM
+          role
+    </select>
+</mapper>
