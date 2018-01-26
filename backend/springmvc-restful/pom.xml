@@ -55,6 +55,14 @@
             <version>2.6.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.45</version>
+        </dependency>
+
+
         <!-- mybatis -->
         <dependency>
             <groupId>org.mybatis</groupId>
@@ -81,7 +89,6 @@
             <artifactId>c3p0</artifactId>
             <version>0.9.1.2</version>
         </dependency>
-
     </dependencies>
 
     <build>
