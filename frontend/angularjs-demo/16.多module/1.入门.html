@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+  
+  
+    <script src="./module1.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3></h3>
+        </div>
+
+    </div>
+</body>
+
+<script>
+        var app = angular.module('myApp', ['module1']);
+
+        app.controller('myController', function ($scope, myService) {
+            //module1模块中定义了service:  myService，此时调用的是module1的
+            console.log(myService.name)
+           
+        });
+
+        // 当myApp自己与定义了同名的myService时，将覆盖掉module1中的myService
+        // app.service('myService', function(){
+        //     return {
+        //         name: 'domi'
+        //     }
+        // })
+</script>
+
+</html>
