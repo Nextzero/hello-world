@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AngularJS Demo</title>
+    <script src="../libs/angularjs/angular.min.js"></script>
+    <script src="../libs/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+
+
+    <style type="text/css">
+        .css-form input.ng-invalid.ng-touched {
+            background-color: #FA787E;
+        }
+
+        .css-form input.ng-valid.ng-touched {
+            background-color: #78FA89;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" ng-controller="myController">
+        <div class="page-header">
+            <h3>表单验证 -  H5与Angularjs </h3>
+        </div>
+
+        <div>
+            <p>1.检测规则</p>
+            <p>2.获取检测结果</p>
+            <p>3.自定义校验结果样式</p>
+        </div>
+
+        <div>
+            <p>0.jquery实时获取表单值，由js代码手工进行验证</p>
+            <p>1.H5表单校验，比如required, maxlength, minlength</p>
+            <p>2.angular,  比如myForm.fieldName.$invalid, myForm.$invalid</p>
+            <p>3.angular + h5</p>
+            <p>4.angular-w5c-validator</p>
+        </div>
+
+        <form name="myForm" action="http://www.baidu.com">
+            <input type="email" name="email" ng-model="email" placeholder="Email Address" required />
+            <input type="url" name="homepage" ng-model="url" placeholder="官网地址" required />
+            <input type="paaaword" name="pwd" ng-model="pwd" placeholder="官网地址" required maxlength="20" minlength="6"/>
+            <button >xxxx</button>
+            {{myForm.$invalid}}
+            {{myForm.$dirty}}
+        </form>
+    </div>
+</body>
+
+<script>
+    var app = angular.module('myApp', []);
+
+    app.controller('myController', function ($scope, $http) {
+
+    });
+</script>
+
+</html>
