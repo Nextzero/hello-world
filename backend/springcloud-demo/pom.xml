@@ -12,10 +12,11 @@
         <module>eureka-demo1</module>
         <module>eureka-demo2</module>
         <module>eureka-demo3</module>
-        <module>eureka-demo-client</module>
         <module>provider-demo1</module>
         <module>provider-demo2</module>
         <module>customer-demo1</module>
+        <module>zuul-server-demo1</module>
+        <module>hystrix-demo</module>
     </modules>
 
     <parent>
