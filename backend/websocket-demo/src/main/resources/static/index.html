@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>websocket</title>
+    <script src="//cdn.bootcss.com/angular.js/1.5.6/angular.min.js"></script>
+    <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+
+<body ng-app="app" ng-controller="MainController">
+    <div>
+        <p>发送消息给服务端</p>
+        <input type="text" ng-model="data.message" placeholder="请输入内容..." />
+        <button ng-click="doSend()" type="button">发送</button>
+
+        <p>收到服务器推送消息</p>
+        <p ng-repeat="row in data.rows">{{$index}} : {{row.data}}</p>
+    </div>
+</body>
+
+<script type="text/javascript">
+    var stompClient = null;
+    var app = angular.module('app', []);
+    app.controller('MainController', function ($rootScope, $scope) {
+        $scope.data = {
+            //消息
+            message: '',
+            rows: []
+        };
+
+        var websocket = null;
+        if ('WebSocket' in window) {
+            //Websocket的连接
+            websocket = new WebSocket("ws://localhost:8080/websocket/socketServer.do");//WebSocket对应的地址
+        }
+        else if ('MozWebSocket' in window) {
+            //Websocket的连接
+            websocket = new MozWebSocket("ws://localhost:8080/websocket/socketServer.do");//SockJS对应的地址
+        }
+        else {
+            //SockJS的连接
+            websocket = new SockJS("http://localhost:8080/sockjs/socketServer.do");    //SockJS对应的地址
+        }
+        websocket.onopen = onOpen;
+        websocket.onmessage = onMessage;
+        websocket.onerror = onError;
+        websocket.onclose = onClose;
+
+        function onOpen(openEvt) {
+            console.log("onOpen:" + openEvt.Data);
+        }
+
+        function onMessage(evt) {
+            console.log("onMessage:" + evt.data);
+            $scope.data.rows.push(evt);
+            $scope.$apply();
+        }
+        function onError() {
+            console.log("onError");
+        }
+        function onClose() {
+            console.log("onClose");
+        }
+
+        $scope.doSend = function () {
+            if (websocket.readyState == websocket.OPEN) {
+                websocket.send($scope.data.message);//调用后台handleTextMessage方法
+                console.log("发送成功!");
+            } else {
+                console.log("连接失败!");
+            }
+        }
+
+        window.close = function () {
+            websocket.onclose();
+        }
+    });
+</script>
+
+</html>
